@@ -6,9 +6,9 @@ namespace EmployeeAttendance.Controllers
 {
     public class EmployeeController : ControllerBase
     {
-        private readonly EmployeeRepository _employeeRepository;
+        private readonly IEmployeeRepository _employeeRepository;
 
-        public EmployeeController(EmployeeRepository employeeRepository) 
+        public EmployeeController(IEmployeeRepository employeeRepository) 
         {
             _employeeRepository = employeeRepository;
         }
@@ -19,6 +19,7 @@ namespace EmployeeAttendance.Controllers
             try
             {
                 var employees = await _employeeRepository.GetEmployeesAsync();
+
                 return Ok(employees);
             }
             catch (Exception)
@@ -30,13 +31,11 @@ namespace EmployeeAttendance.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetEmployeeById(int id)
         {
-            try
-            {
+  
                 var employee = await _employeeRepository.GetEmployeeByIdAsync(id);
                 if (employee == null) return NotFound();
                 return Ok(employee);
-            }
-            catch (Exception) { return null; }
+
         }
 
         [HttpPost]
